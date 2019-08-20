@@ -3,13 +3,12 @@ import axios from "axios";
 import "./App.css";
 import Search from "./components/search.js";
 import Table from "./components/table";
-import Row from "./components/Row";
-import Btn from "./components/Btn.js";
 
 class mainApp extends Component {
   state = {
     githubData: [],
-    loaded: false
+    UserFound: false,
+    reposExist: false
   };
 
   searchRequest = s => {
@@ -17,15 +16,24 @@ class mainApp extends Component {
     axios
       .get(request)
       .then(response => {
-        Array.isArray(response.data)
+        response.data.length >= 1
           ? this.setState({
-              githubData: response.data.slice(1, 6),
-              loaded: true
+              githubData: response.data.slice(0, 5),
+              UserFound: true,
+              reposExist: true
             })
-          : this.setState({ githubData: "User is not Found", id: 0 });
+          : this.setState({
+              githubData: "User Found, but there is no repo",
+              UserFound: true,
+              reposExist: false
+            });
       })
       .catch(error => {
-        this.setState({ githubData: "User is not Found", id: 0 });
+        this.setState({
+          githubData: "User is not Found",
+          UserFound: false,
+          reposExist: false
+        });
       });
   };
 
@@ -37,11 +45,23 @@ class mainApp extends Component {
         <div className="bottom">
           {this.state.githubData === "User is not Found" ? (
             <h1> "User is not Found" </h1>
-          ) : null}
+          ) : (
+            ""
+          )}
 
-          {this.state.githubData.length === 5 && this.state.loaded ? (
+          {this.state.githubData === "User Found, but there is no repo" ? (
+            <h1> "User Found, but there is no repo" </h1>
+          ) : (
+            ""
+          )}
+
+          {this.state.githubData.length >= 1 &&
+          this.state.UserFound &&
+          this.state.reposExist ? (
             <Table data={this.state.githubData} />
-          ) : null}
+          ) : (
+            ""
+          )}
         </div>
       </div>
     );
