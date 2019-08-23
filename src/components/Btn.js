@@ -6,10 +6,10 @@ function Btn(props) {
     <div>
       <button
         type="button"
-        className="btn btn-warning"
+        className="btn btn-danger"
         onClick={() => window.open(props.link, "_blank")}
       >
-        See Repo
+        Delete
       </button>
     </div>
   );

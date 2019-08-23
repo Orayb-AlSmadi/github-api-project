@@ -27,6 +27,7 @@ class Table extends Component {
                 lang={repo.language}
                 link={repo.svn_url}
                 key={repo.id}
+                flip={this.props.flip}
               />
             );
           })}
